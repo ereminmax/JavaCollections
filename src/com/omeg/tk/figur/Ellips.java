@@ -1,3 +1,5 @@
+package com.omeg.tk.figur;
+
 /**
  * Created by jacksolovey on 11.03.2016.
  */

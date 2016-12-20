@@ -1,29 +1,8 @@
-/*
- * Operation op = createOperation(value0, value1, value2);
- if (op.getClass().equals(Devide.class)) {
- System.out.println("Деление");
- }
- System.out.println(op.execute());
- }
-
- private static Operation createOperation(double value0, double value1, char value2) {
- switch (value2) {
- case '+':
- return new Sum(value0, value1);
- case '-':
- return new Minus(value0, value1);
- case '/':
- return new Devide(value0, value1);
- case '*':
- return new Mult(value0, value1);
- default:
- return null;
- }
- }
- */
-
-import java.io.*;
+package com.omeg.tk.figur;
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  *
@@ -36,6 +15,8 @@ public class CollectionsTask1 {
     private List<Shape> list = new ArrayList<>();
     private Map<Class, Integer> map = new HashMap<>();
 
+    JFrame window;
+
     public static void main(String[] args) {
         new CollectionsTask1().justDoIt();
     }
@@ -45,7 +26,8 @@ public class CollectionsTask1 {
             System.out.println("Введите 0 Выход\n"
                     + "Введите 1 Создать\n"
                     + "Введите 2 Площадь\n"
-                    + "Введите 3 Удалить\n");
+                    + "Введите 3 Удалить\n"
+                    + "Введите 4 Нарисовать");
 
             ch = sc.nextInt();
 
@@ -62,12 +44,88 @@ public class CollectionsTask1 {
                 case 3:
                     delete();
                     break;
+                case 4:
+                    draw();
+                    break;
             }
         }
     }
 
+    private void draw() {
+        showMessage();
+
+        switch (ch) {
+            case 1:
+                drawShape(Square.class);
+                break;
+            case 2:
+                drawShape(Circle.class);
+                break;
+            case 3:
+                drawShape(Triangle.class);
+                break;
+            case 4:
+                drawShape(Ellips.class);
+                break;
+        }
+    }
+
+    private void drawShape(Class shapeName) {
+        if (window == null) {
+            drawFrame();
+        }
+
+        Color color = null;
+        askColor();
+
+        switch (ch) {
+            case 1:
+                color = Color.RED;
+                break;
+            case 2:
+                color = Color.GREEN;
+                break;
+            case 3:
+                color = Color.BLUE;
+                break;
+        }
+
+        // Draw the shape
+        for (Shape s : list) {
+            if (s.getClass().equals(shapeName)) {
+                if (s.getClass().equals(Square.class)) {
+                    window.getContentPane().removeAll();
+                    window.getContentPane().add(new JSquare(s.getA(), s.getB(), color));
+                }
+                if (s.getClass().equals(Circle.class) || s.getClass().equals(Ellips.class)) {
+                    window.getContentPane().removeAll();
+                    window.getContentPane().add(new JOval(s.getA(), s.getB(), color));
+                }
+                if (s.getClass().equals(Triangle.class)) {
+                    window.getContentPane().removeAll();
+                    window.getContentPane().add(new JTriangle(s.getA(), s.getB(), color));
+                }
+            }
+        }
+    }
+
+    private void askColor() {
+        System.out.println("Введите 1 Красный\n"
+                + "Введите 2 Зеленый\n" +
+                "Введите 3 Голубой");
+
+        this.ch = sc.nextInt();
+    }
+
+    private void drawFrame() {
+        window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setBounds(30, 30, 300, 300);
+        window.setVisible(true);
+    }
+
     private void create() {
-        System.out.println("Введите a и b\n");
+        System.out.println("Введите a и b");
         int a = sc.nextInt();
         int b = sc.nextInt();
 
@@ -178,7 +236,7 @@ public class CollectionsTask1 {
     private void showMessage() {
         System.out.println("Введите 1 Квадрат\n"
                 + "Введите 2 Круг\n" +
-                "Введите 3 Треугольник" +
+                "Введите 3 Треугольник\n" +
                 "Введите 4 Эллипс");
 
         this.ch = sc.nextInt();
